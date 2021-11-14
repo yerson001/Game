@@ -32,16 +32,15 @@ const layout = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 ]
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Below this all code relies on the Dom
-    //accssing the grid
+
     const grid = document.querySelector('.grid')
-        //creating all the small squares within the grid
+
     for (let i = 0; i < layout.length; i++) {
         const div = document.createElement('div')
         div.classList.add('gridSquare')
         grid.appendChild(div)
     }
-    // Acessing the DOM
+
     const gridSquare = document.querySelectorAll('.gridSquare')
     const infoBox = document.querySelector('.infoBox')
     const score = document.querySelector('.score')
@@ -52,18 +51,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const up = document.querySelector('.up')
     const right = document.querySelector('.right')
     const down = document.querySelector('.down')
-        //This event listener prevents the arrow keys from scrolling
+
     document.addEventListener('keydown', preventDefultScroll)
-        // eventlistner to start the game
+
     start.addEventListener('click', () => {
-        // if it says start run the game for the first time.
+
         if (start.innerHTML === 'Start') {
             startGame()
             document.addEventListener('keyup', movePacMan)
             start.innerHTML = 'RUN!'
             infoBox.innerHTML = 'nice m8'
             start.style.backgroundColor = 'red'
-                // if it says play again? run the game 1st > time
+
         } else if (start.innerHTML === 'Play Again?') {
             countUpid = setInterval(countUp, 1000)
             for (let i = 0; i < 16; i++) {
@@ -83,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function assignGrid() {
         infoBox.innerHTML = 'Click ↑'
         for (let i = 0; i < layout.length; i++) {
-            // gridSquare[i].classList.add(layoutClasses[layout[i]])
+
             if (layout[i] === 1) {
                 gridSquare[i].classList.add('wall')
             } else if (layout[i] === 2) {
@@ -97,11 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    // Calling the assignGrid fucntion
+
     assignGrid()
-        // This counts to see how much food is left before you complete the level
+
     function checkWin() {
-        // let foodAmount = (layout.filter(x => x === 2)).length
+
         let foodAmount = 0
         for (let i = 0; i < 400; i++) {
             if (gridSquare[i].classList.contains('food')) {
@@ -126,15 +125,14 @@ document.addEventListener('DOMContentLoaded', () => {
             time = time + 0
         }
     }
-    //Calling the checkWin to run at a set interval 200ms
+
     setInterval(checkWin, 200)
-        // Function to play the Ghost sounds
+
     function pacSound() {
         const move = new Audio('pacman_chomp.wav')
         move.play()
     }
 
-    //Function that moves packman using the arrow keys
     function movePacMan(e) {
         gridSquare[pacIndex].classList.remove('pacmanUp')
         gridSquare[pacIndex].classList.remove('pacmanRight')
@@ -195,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
     function preventDefultScroll(e) {
         if ([32, 37, 38, 39, 40, 16].indexOf(e.keyCode) > -1) {
             e.preventDefault()
@@ -211,5 +208,4 @@ document.addEventListener('DOMContentLoaded', () => {
         time = time + 1
         timer.innerHTML = time
     }
-
 })
