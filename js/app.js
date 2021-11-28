@@ -3,7 +3,6 @@ let pacIndex = 250
 let scoreNumber = 0
 
 let time = 0
-let countUpid
 let pacSoundId
 let highScoreNumber = 0
 let highScoreTime = 0
@@ -43,16 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const gridSquare = document.querySelectorAll('.gridSquare')
     const infoBox = document.querySelector('.infoBox')
-    const score = document.querySelector('.score')
-    const timer = document.querySelector('.timer')
     const start = document.querySelector('.start')
-    const highScore = document.querySelector('.highScore')
-    const left = document.querySelector('.left')
-    const up = document.querySelector('.up')
-    const right = document.querySelector('.right')
-    const down = document.querySelector('.down')
 
-    document.addEventListener('keydown', preventDefultScroll)
+
+    //document.addEventListener('keydown', preventDefultScroll)
 
     start.addEventListener('click', () => {
 
@@ -64,17 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
             start.style.backgroundColor = 'red'
 
         } else if (start.innerHTML === 'Play Again?') {
-            countUpid = setInterval(countUp, 1000)
             for (let i = 0; i < 16; i++) {
                 clearInterval(caughtIdOne)
                 clearInterval(caughtIdTwo)
                 clearInterval(caughtIdThree)
                 clearInterval(caughtIdFour)
-            }
-            for (let i = 0; i < ghosts.length; i++) {
-
-                start.innerHTML = 'RUN!'
-                start.style.backgroundColor = 'red'
             }
         }
     })
@@ -82,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function assignGrid() {
         infoBox.innerHTML = 'Click ↑'
         for (let i = 0; i < layout.length; i++) {
-
             if (layout[i] === 1) {
                 gridSquare[i].classList.add('wall')
             } else if (layout[i] === 2) {
@@ -99,35 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     assignGrid()
 
-    function checkWin() {
-
-        let foodAmount = 0
-        for (let i = 0; i < 400; i++) {
-            if (gridSquare[i].classList.contains('food')) {
-                foodAmount = foodAmount + 1
-            }
-        }
-        if (foodAmount === 0) {
-            clearInterval(pacSoundId)
-            for (let i = 0; i < 16; i++) {
-                clearInterval(caughtIdOne)
-                clearInterval(caughtIdTwo)
-                clearInterval(caughtIdThree)
-                clearInterval(caughtIdFour)
-            }
-            start.innerHTML = 'Play Again?'
-            infoBox.innerHTML = 'YOU WIN!'
-            if (scoreNumber > highScoreNumber) {
-                highScoreNumber = scoreNumber
-                highScoreTime = time
-            }
-            highScore.innerHTML = `${highScoreNumber}ps in ${highScoreTime}s`
-            time = time + 0
-        }
-    }
-
-    setInterval(checkWin, 200)
-
     function pacSound() {
         const move = new Audio('pacman_chomp.wav')
         move.play()
@@ -138,31 +95,25 @@ document.addEventListener('DOMContentLoaded', () => {
         gridSquare[pacIndex].classList.remove('pacmanRight')
         gridSquare[pacIndex].classList.remove('pacmanDown')
         gridSquare[pacIndex].classList.remove('pacmanLeft')
+            //console.log("this-->" + e.keyCode);
         switch (e.keyCode) {
+            //switch (num) {
             case 37: // left arrow
-                left.classList.add('active')
-                setTimeout(() => left.classList.remove('active'), 100)
                 if (gridSquare[pacIndex - 1].classList.contains('wall')) pacIndex += 0
                 else if (pacIndex % width !== 0) pacIndex -= 1
                 gridSquare[pacIndex].classList.add('pacmanLeft')
                 break
             case 38: // upp arrow
-                up.classList.add('active')
-                setTimeout(() => up.classList.remove('active'), 100)
                 if (gridSquare[pacIndex - width].classList.contains('wall')) pacIndex += 0
                 else if (pacIndex - width >= 0) pacIndex -= width
                 gridSquare[pacIndex].classList.add('pacmanUp')
                 break
             case 39: // right arrow
-                right.classList.add('active')
-                setTimeout(() => right.classList.remove('active'), 100)
                 if (gridSquare[pacIndex + 1].classList.contains('wall')) pacIndex += 0
                 else if (pacIndex % width < width - 1) pacIndex += 1
                 gridSquare[pacIndex].classList.add('pacmanRight')
                 break
             case 40: //down arrow
-                down.classList.add('active')
-                setTimeout(() => down.classList.remove('active'), 100)
                 if (gridSquare[pacIndex + width].classList.contains('wall')) pacIndex += 0
                 else if (pacIndex + width < width * width) pacIndex += width
                 gridSquare[pacIndex].classList.add('pacmanDown')
@@ -172,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gridSquare[pacIndex].classList.contains('food')) {
             gridSquare[pacIndex].classList.remove('food')
             scoreNumber = scoreNumber + 10
-            score.innerHTML = scoreNumber
+                //score.innerHTML = scoreNumber
         }
         // The next 2 if statments allow for warping from each side of the map
         if (pacIndex === 141) {
@@ -193,19 +144,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function preventDefultScroll(e) {
-        if ([32, 37, 38, 39, 40, 16].indexOf(e.keyCode) > -1) {
-            e.preventDefault()
-        }
-    }
-
     function startGame() {
         pacSoundId = setInterval(pacSound, 650)
-        countUpid = setInterval(countUp, 1000)
     }
 
-    function countUp() {
-        time = time + 1
-        timer.innerHTML = time
-    }
+
 })
